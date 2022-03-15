@@ -10,7 +10,7 @@ function getWebgl() {
 }
 
 function getShadowShader(webgl) {
-	let shadowShader = initShaders(webgl, '../shaders/svshader.glsl', '../shaders/sfshader.glsl')
+	let shadowShader = initShaders(webgl, 'shaders/svshader.glsl', 'shaders/sfshader.glsl')
 	webgl.useProgram(shadowShader)
 
 	let frameBuffer = webgl.createFramebuffer()
@@ -274,7 +274,7 @@ function getDiamonds() {
 
 window.onload = function render() {
 	let webgl = getWebgl()
-	let shader = initShaders(webgl, '../shaders/vshader.glsl', '../shaders/fshader.glsl')
+	let shader = initShaders(webgl, 'shaders/vshader.glsl', 'shaders/fshader.glsl')
 	getTextures(webgl)
 	let grass = getGrass()
 
