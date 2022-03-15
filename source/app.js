@@ -3,7 +3,7 @@ function getWebgl() {
     let webgl = canvas.getContext('webgl2')
 
     webgl.viewport(0, 0, canvas.width, canvas.height)
-    webgl.clearColor(.9, .9, .9, 1)
+	webgl.clearColor(.85, .9, .9, 1)
 	webgl.enable(webgl.DEPTH_TEST)
 
 	return webgl
@@ -41,7 +41,6 @@ function getShadowShader(webgl) {
 }
 
 function getPlayer() {
-	let playerAngle = mult(rotateX(90), mult(rotateY(0), rotateZ(0)))
 	let player = [new Player(
 		ortho(-3, 7, -3, 7, -3, 7),
 		vec3(playerPosition[0], playerPosition[1], playerPosition[2]),
