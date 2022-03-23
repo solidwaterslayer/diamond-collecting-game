@@ -1,43 +1,12 @@
 function getWebgl() {
-    let canvas = document.getElementById('canvas')
-    let webgl = canvas.getContext('webgl2')
+	let canvas = document.getElementById('canvas')
+	let webgl = canvas.getContext('webgl2')
 
-    webgl.viewport(0, 0, canvas.width, canvas.height)
+	webgl.viewport(0, 0, canvas.width, canvas.height)
 	webgl.clearColor(.85, .9, .9, 1)
 	webgl.enable(webgl.DEPTH_TEST)
 
 	return webgl
-}
-
-function getShadowShader(webgl) {
-	let shadowShader = initShaders(webgl, 'shaders/svshader.glsl', 'shaders/sfshader.glsl')
-	webgl.useProgram(shadowShader)
-
-	let frameBuffer = webgl.createFramebuffer()
-	frameBuffer.width = 256
-	frameBuffer.height = 256
-	let renderBuffer = webgl.createRenderbuffer()
-
-	webgl.bindFramebuffer(webgl.FRAMEBUFFER, frameBuffer)
-	webgl.bindRenderbuffer(webgl.RENDERBUFFER, renderBuffer)
-
-	webgl.renderbufferStorage(webgl.RENDERBUFFER, webgl.DEPTH_COMPONENT16, 256, 256)
-	webgl.framebufferRenderbuffer(webgl.FRAMEBUFFER, webgl.DEPTH_ATTACHMENT, webgl.RENDERBUFFER, renderBuffer)
-	let depthTexture = webgl.createTexture()
-	webgl.bindTexture(webgl.TEXTURE_2D, depthTexture)
-	webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, 256, 256, 0, webgl.RGBA, webgl.UNSIGNED_BYTE, null)
-	webgl.generateMipmap(webgl.TEXTURE_2D)
-	webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.NEAREST_MIPMAP_NEAREST)
-	webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.NEAREST)
-//	webgl.texParameterf(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.NEAREST)
-//	webgl.texParameterf(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.NEAREST)
-//	webgl.texParameterf(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE)
-//	webgl.texParameterf(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE)
-
-	webgl.bindFramebuffer(webgl.FRAMEBUFFER, null)
-	webgl.bindRenderbuffer(webgl.RENDERBUFFER, null)
-
-	return [shadowShader, frameBuffer, renderBuffer, depthTexture]
 }
 
 function getPlayer() {
@@ -62,14 +31,7 @@ function getLight() {
 		vec3(-5 * Math.cos(radians(angle)), -5 * Math.sin(radians(angle)), 0),
 		vec4(.5, .5, .5, 1),
 		vec4(.5, .5, .5, 1),
-		vec4(1, 1, 1, 1),
-		new Player(
-			ortho(-10, 10, -10, 10, -10, 10),
-			vec3(0, 0, 0),
-			vec3(Math.cos(radians(angle - 90)), Math.sin(radians(angle - 90)), 0),
-			vec3(0, 0, -1),
-			vec3(Math.cos(radians(angle)), Math.sin(radians(angle)), 0)
-		)
+		vec4(1, 1, 1, 1)
 	)
 }
 
@@ -142,14 +104,14 @@ function getGrass() {
 
 function getSlime() {
 	let slime = new Polygon([
-    	vec3(0, 0, 0),
-    	vec3(slimeSize, 0, 0),
-    	vec3(slimeSize, 0, slimeSize),
-    	vec3(0, 0, slimeSize),
-    	vec3(0, slimeSize, 0),
-    	vec3(slimeSize, slimeSize, 0),
-    	vec3(slimeSize, slimeSize, slimeSize),
-    	vec3(0, slimeSize, slimeSize)
+		vec3(0, 0, 0),
+		vec3(slimeSize, 0, 0),
+		vec3(slimeSize, 0, slimeSize),
+		vec3(0, 0, slimeSize),
+		vec3(0, slimeSize, 0),
+		vec3(slimeSize, slimeSize, 0),
+		vec3(slimeSize, slimeSize, slimeSize),
+		vec3(0, slimeSize, slimeSize)
 	], [
 		0, 3, 2,
 		0, 2, 1,
@@ -164,14 +126,14 @@ function getSlime() {
 		0, 1, 5,
 		0, 5, 4
 	], [
-    	normalize(vec3(-1, -1, -1)),
-    	normalize(vec3(1, -1, -1)),
-    	normalize(vec3(1, -1, 1)),
-    	normalize(vec3(-1, -1, 1)),
-    	normalize(vec3(-1, 1, -1)),
-    	normalize(vec3(1, 1, -1)),
-    	normalize(vec3(1, 1, 1)),
-    	normalize(vec3(-1, 1, 1))
+		normalize(vec3(-1, -1, -1)),
+		normalize(vec3(1, -1, -1)),
+		normalize(vec3(1, -1, 1)),
+		normalize(vec3(-1, -1, 1)),
+		normalize(vec3(-1, 1, -1)),
+		normalize(vec3(1, 1, -1)),
+		normalize(vec3(1, 1, 1)),
+		normalize(vec3(-1, 1, 1))
 	], [
 		vec2(0, 0),
 		vec2(1, 0),
@@ -194,18 +156,18 @@ function getSlime() {
 function getSlimeCape() {
 	let capeHeight = [.3, .35, .4]
 	let slimeCape = new Polygon([
-    	vec3(0, capeHeight[Math.floor(Math.random() * capeHeight.length)], 0),
-    	vec3(slimeSize, capeHeight[Math.floor(Math.random() * capeHeight.length)], 0),
-    	vec3(slimeSize, capeHeight[Math.floor(Math.random() * capeHeight.length)], slimeSize),
-    	vec3(0, capeHeight[Math.floor(Math.random() * capeHeight.length)], slimeSize)
+		vec3(0, capeHeight[Math.floor(Math.random() * capeHeight.length)], 0),
+		vec3(slimeSize, capeHeight[Math.floor(Math.random() * capeHeight.length)], 0),
+		vec3(slimeSize, capeHeight[Math.floor(Math.random() * capeHeight.length)], slimeSize),
+		vec3(0, capeHeight[Math.floor(Math.random() * capeHeight.length)], slimeSize)
 	], [
 		0, 1, 2,
 		2, 3, 0
 	], [
-    	normalize(vec3(0, 1, 0)),
-    	normalize(vec3(0, 1, 0)),
-    	normalize(vec3(0, 1, 0)),
-    	normalize(vec3(0, 1, 0))
+		normalize(vec3(0, 1, 0)),
+		normalize(vec3(0, 1, 0)),
+		normalize(vec3(0, 1, 0)),
+		normalize(vec3(0, 1, 0))
 	], [
 		vec2(0, 0),
 		vec2(1, 0),
@@ -284,26 +246,24 @@ window.onload = function render() {
 			}
 		}
 
-		let shadowShader = getShadowShader(webgl)
 		player = getPlayer()
 		let light = getLight()
 		let slime = getSlime()
 		let slimeCape = getSlimeCape()
 		let diamonds = getDiamonds()
-		drawShadows(webgl, shadowShader, light, [slime, slimeCape].concat(diamonds))
-		drawObjects(webgl, shader, player, light, shadowShader[3], [grass, slime, slimeCape].concat(diamonds))
+		drawObjects(webgl, shader, player, light, [grass, slime, slimeCape].concat(diamonds))
 
 		angle += 3
-		if (diamondXs.length == 6) {
+		if (diamondXs.length == 2) {
 			slimeSize = 1
-		} else if (diamondXs.length == 3) {
+		} else if (diamondXs.length == 1) {
 			slimeSize = 1.5
 		} else if (diamondXs.length == 0) {
 			playerPosition[6] = playerPosition[3]
 			playerPosition[7] = playerPosition[4]
 			playerPosition[8] = playerPosition[5]
 			slimeSize = .5
-			for (let i = 0; i < 10; i++) {
+			for (let i = 0; i < 3; i++) {
 				diamondXs.push(Math.random() * 20 - 10)
 				diamondZs.push(Math.random() * 20 - 10)
 			}
@@ -311,31 +271,13 @@ window.onload = function render() {
 	}, 50)
 }
 
-function drawShadows(webgl, shadowShader, light, objects) { drawShadowsHelper(webgl, shadowShader[0], shadowShader[1], shadowShader[2], shadowShader[3], light, objects) }
-function drawShadowsHelper(webgl, shadowShader, frameBuffer, renderBuffer, depthTexture, light, objects) {
-	webgl.bindFramebuffer(webgl.FRAMEBUFFER, frameBuffer)
-	webgl.bindRenderbuffer(webgl.RENDERBUFFER, renderBuffer)
-
-	webgl.activeTexture(webgl.TEXTURE0)
-	webgl.bindTexture(webgl.TEXTURE_2D, depthTexture)
-	webgl.framebufferTexture2D(webgl.FRAMEBUFFER, webgl.COLOR_ATTACHMENT0, webgl.TEXTURE_2D, depthTexture, 0)
-
+function drawObjects(webgl, shader, player, light, objects) {
 	webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT)
-	for (let i = 0; i < objects.length; i++) {
-		objects[i].drawShadow(webgl, shadowShader, light)
-	}
-
-	webgl.bindFramebuffer(webgl.FRAMEBUFFER, null)
-	webgl.bindRenderbuffer(webgl.RENDERBUFFER, null)
-}
-
-function drawObjects(webgl, shader, player, light, depthTexture, objects) {
-	webgl.clear(webgl.COLOR_BUFFER_BIT | webgl.DEPTH_BUFFER_BIT)
-	objects[0].draw(webgl, shader, player[currentPlayer], light, texture['grass'], depthTexture)
-	objects[1].draw(webgl, shader, player[currentPlayer], light, texture['slime'], depthTexture)
-	objects[2].draw(webgl, shader, player[currentPlayer], light, texture['cape'], depthTexture)
+	objects[0].draw(webgl, shader, player[currentPlayer], light, texture['grass'])
+	objects[1].draw(webgl, shader, player[currentPlayer], light, texture['slime'])
+	objects[2].draw(webgl, shader, player[currentPlayer], light, texture['cape'])
 	for (let i = 3; i < objects.length; i++) {
-		objects[i].draw(webgl, shader, player[currentPlayer], light, texture['diamond'], depthTexture)
+		objects[i].draw(webgl, shader, player[currentPlayer], light, texture['diamond'])
 	}
 }
 
@@ -361,16 +303,16 @@ document.onkeydown = function controlPlayer(windowEvent) {
 	} if (isDown) {
 		playerPosition[2] -= slimeSize
 		playerPosition[5] -= slimeSize
-    } else if (isUp) {
+	} else if (isUp) {
 		playerPosition[2] += slimeSize
 		playerPosition[5] += slimeSize
-    } else if (isLeft) {
+	} else if (isLeft) {
 		playerPosition[0] -= slimeSize
 		playerPosition[3] -= slimeSize
-    } else if (isRight) {
+	} else if (isRight) {
 		playerPosition[0] += slimeSize
 		playerPosition[3] += slimeSize
-    } else if (isSpace) {
+	} else if (isSpace) {
 		currentPlayer = 1 - currentPlayer
 	}
 }
